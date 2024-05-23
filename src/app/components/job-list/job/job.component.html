@@ -1,0 +1,19 @@
+<div class="job-item row align-items-center mb-3 p-2 border-bottom">
+  <div class="col-md-1">
+    <img
+      [src]="job.companyLogo"
+      alt="{{ job.companyName }} logo"
+      class="img-fluid"
+    />
+  </div>
+  <div class="col-md-9">
+    <h5>
+      <a [routerLink]="['/jobs', job.id]">{{ job.title }}</a>
+    </h5>
+    <p class="mb-1">Company: {{ job.companyName }}</p>
+    <p class="mb-1">Reference: {{ job.reference }}</p>
+  </div>
+  <div class="col-md-2 text-end">
+    <span [id]="'star-' + job.id" class="icon-star"></span>
+  </div>
+</div>
