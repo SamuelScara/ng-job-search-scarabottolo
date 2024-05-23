@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Job } from '../../../models/job.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+
+import { Job } from '../../../models/job.model';
+import { JobFavoriteService } from '../../../services/job-favorite.service';
 
 @Component({
   selector: 'app-job',
@@ -12,5 +14,17 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class JobComponent {
   @Input() job!: Job;
 
-  constructor() {}
+  constructor(private jobFavService: JobFavoriteService) {}
+
+  toggleFavorite(): void {
+    if (this.isFavorite()) {
+      this.jobFavService.removeFavoriteJob(this.job);
+    } else {
+      this.jobFavService.addToFavorites(this.job);
+    }
+  }
+
+  isFavorite(): boolean {
+    return this.jobFavService.isFavorite(this.job);
+  }
 }

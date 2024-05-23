@@ -1,0 +1,9 @@
+<div
+  *ngIf="favJobs.length === 0"
+  class="h-100 d-flex align-items-center justify-content-center"
+>
+  <p>No favorite jobs.</p>
+</div>
+<div *ngFor="let fav of favJobs">
+  <app-job-favorite [favJob]="fav"></app-job-favorite>
+</div>

@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+import { JobComponent } from './job/job.component';
 import { Job } from '../../models/job.model';
 import { JobService } from '../../services/job.service';
-import { Observable } from 'rxjs';
-import { JobComponent } from './job/job.component';
 
 @Component({
   selector: 'app-job-list',
