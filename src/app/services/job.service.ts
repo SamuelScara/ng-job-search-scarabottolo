@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
 import { Job } from '../models/job.model';
 
@@ -15,7 +15,7 @@ export class JobService {
     return this.http.get<Job[]>('/jobs');
   }
 
-  getJobById(id: number): Observable<Job> {
-    return this.http.get<Job>(`/jobs/${id}`);
+  getJobById(id: number): Observable<Job | null> {
+    return this.http.get<Job>(`/jobs/${id}`).pipe(catchError(() => of(null)));
   }
 }

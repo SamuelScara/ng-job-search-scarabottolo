@@ -6,13 +6,12 @@ import { Job } from '../models/job.model';
   providedIn: 'root',
 })
 export class JobFavoriteService {
-  private favJobs!: Job[];
   private localStorageKey = 'favoriteJobs';
 
   constructor() {}
 
   getFavJobs(): Job[] {
-    return this.loadFavorites();
+    return this.loadFavorites() ?? [];
   }
 
   isFavorite(job: Job): boolean {
@@ -21,7 +20,7 @@ export class JobFavoriteService {
   }
 
   addToFavorites(job: Job): void {
-    const favorites = this.loadFavorites();
+    const favorites = [...this.loadFavorites()];
     if (!this.isFavorite(job)) {
       favorites.push(job);
       this.saveFavorites(favorites);
@@ -29,14 +28,12 @@ export class JobFavoriteService {
   }
 
   removeFavoriteJob(job: Job): void {
-    let favorites = this.loadFavorites();
-    favorites = favorites.filter((fav) => fav.id !== job.id);
+    const favorites = this.loadFavorites().filter((fav) => fav.id !== job.id);
     this.saveFavorites(favorites);
   }
 
   private loadFavorites(): Job[] {
-    const favorites = localStorage.getItem(this.localStorageKey);
-    return favorites ? JSON.parse(favorites) : [];
+    return JSON.parse(localStorage.getItem(this.localStorageKey) ?? '[]');
   }
 
   private saveFavorites(favorites: Job[]): void {
