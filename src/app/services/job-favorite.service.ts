@@ -11,32 +11,42 @@ export class JobFavoriteService {
   constructor() {}
 
   getFavJobs(): Job[] {
-    return this.loadFavorites() ?? [];
+    return this.loadFavorites();
   }
 
   isFavorite(job: Job): boolean {
-    const favorites: Job[] = this.loadFavorites();
-    return favorites.some((fav) => fav.id === job.id);
+    return this.getFavJobs().some((fav) => fav.id === job.id);
   }
 
   addToFavorites(job: Job): void {
-    const favorites = [...this.loadFavorites()];
-    if (!this.isFavorite(job)) {
-      favorites.push(job);
-      this.saveFavorites(favorites);
+    const favorites: Job[] = this.getFavJobs();
+    if (!favorites.some((fav) => fav.id === job.id)) {
+      this.saveFavorites([...favorites, job]);
     }
   }
 
   removeFavoriteJob(job: Job): void {
-    const favorites = this.loadFavorites().filter((fav) => fav.id !== job.id);
-    this.saveFavorites(favorites);
+    const updatedFavorites: Job[] = this.getFavJobs().filter(
+      (fav) => fav.id !== job.id
+    );
+    this.saveFavorites(updatedFavorites);
   }
 
   private loadFavorites(): Job[] {
-    return JSON.parse(localStorage.getItem(this.localStorageKey) ?? '[]');
+    try {
+      const data: string | null = localStorage.getItem(this.localStorageKey);
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      console.error('Error loading favorites from localStorage', error);
+      return [];
+    }
   }
 
   private saveFavorites(favorites: Job[]): void {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(favorites));
+    try {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Error saving favorites to localStorage', error);
+    }
   }
 }

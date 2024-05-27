@@ -18,7 +18,13 @@ export const jobExistGuard: CanActivateFn = (
   const jobService = inject(JobService);
   const router = inject(Router);
 
-  const jobId = +route.paramMap.get('jobId')!;
+  const jobIdParam = route.paramMap.get('jobId');
+  if (!jobIdParam) {
+    router.navigate(['/page-not-found']);
+    return of(false);
+  }
+
+  const jobId = +jobIdParam;
   return jobService.getJobById(jobId).pipe(
     map((job) => {
       if (job) {
@@ -28,7 +34,8 @@ export const jobExistGuard: CanActivateFn = (
         return false;
       }
     }),
-    catchError(() => {
+    catchError((error) => {
+      console.error('Error fetching job', error);
       router.navigate(['/page-not-found']);
       return of(false);
     })

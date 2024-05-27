@@ -13,9 +13,11 @@ import { JobFavoriteService } from '../../services/job-favorite.service';
   styleUrl: './job-list-favorites.component.css',
 })
 export class JobListFavoritesComponent implements OnInit {
-  favJobs!: Job[];
+  favJobs: Job[];
 
-  constructor(private jobFavService: JobFavoriteService) {}
+  constructor(private jobFavService: JobFavoriteService) {
+    this.favJobs = [];
+  }
 
   ngOnInit(): void {
     this.favJobs = this.jobFavService.getFavJobs();
